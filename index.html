@@ -569,21 +569,6 @@
   </div>
 </section>
 
-<!-- CATEGORIES -->
-<section class="categories" id="colecciones" style="padding:0;">
-  <div class="cat-grid">
-    <div class="cat-card">
-      <div class="cat-img">👗</div>
-      <div class="cat-overlay">
-        <div class="cat-name">Camisetas</div>
-        <div class="cat-count">10 piezas</div>
-      </div>
-      <div class="cat-arrow">→</div>
-    </div>
-
-  </div>
-</section>
-
 <!-- PRODUCTS -->
 <section id="productos">
   <h2 class="section-title">Productos</h2>
@@ -725,13 +710,17 @@
 <script>
   const products = [
     { id:1, name:'Camiseta', brand:'undergold', price:85000, oldPrice:null,
-      imageFront:'img/productos/undergold.png',
-      imageBack:'img/productos/undergold-back.png',
-      badge:'new'
+      images:['img/productos/undergold.png'], badge:'new'
     },
-    { id:2, name:'Camiseta Logo JOOMA', brand:'JOOMA Collection', price:95000, oldPrice:145000, emoji:'👕', badge:'sale' },
-    { id:5, name:'Pantalón Wide Leg', brand:'JOOMA Collection', price:165000, oldPrice:null, emoji:'👖', badge:null },
-    { id:7, name:'Cardigan Oversized', brand:'JOOMA Basics', price:135000, oldPrice:null, emoji:'🧣', badge:'new' },
+    { id:2, name:'Supreme', brand:'undergold', price:85000, oldPrice:null,
+      images:['img/productos/supreme.jpg'], badge:'new'
+    },
+    { id:3, name:'Nike', brand:'undergold', price:85000, oldPrice:null,
+      images:['img/productos/nike.jpg'], badge:'new'
+    },
+    { id:4, name:'Clemount', brand:'undergold', price:85000, oldPrice:null,
+      images:['img/productos/clemount.png', 'img/productos/clemount parte trasera.png'], badge:'new'
+    },
   ];
 
   let cart = [];
@@ -746,12 +735,12 @@
       <div class="product-card">
         <div class="product-img">
           ${p.badge ? `<span class="product-badge badge-${p.badge}">${p.badge === 'new' ? 'Nuevo' : 'Oferta'}</span>` : ''}
-          ${p.imageFront ? `
+          ${p.images && p.images.length ? `
             <img
               id="product-image-${p.id}"
-              src="${p.imageFront}"
+              src="${p.images[0]}"
               alt="${p.name}"
-              title="Haz click para ver la espalda"
+              title="Haz click para ver ${p.images.length > 1 ? 'cambiar entre vistas' : 'ver el producto'}"
               onclick="toggleProductImage(${p.id})"
             />
           ` : `<span>${p.emoji || ''}</span>`}
@@ -824,13 +813,13 @@
 
   function toggleProductImage(id) {
     const product = products.find(p => p.id === id);
-    if (!product || !product.imageFront || !product.imageBack) return;
+    if (!product || !product.images || product.images.length < 2) return;
     const image = document.getElementById(`product-image-${id}`);
     if (!image) return;
     const currentSrc = image.src;
-    const frontUrl = new URL(product.imageFront, location).href;
-    const backUrl = new URL(product.imageBack, location).href;
-    image.src = currentSrc === frontUrl ? backUrl : frontUrl;
+    const currentIndex = product.images.findIndex(src => new URL(src, location).href === currentSrc);
+    const nextIndex = (currentIndex + 1) % product.images.length;
+    image.src = product.images[nextIndex];
   }
 
   function subscribeNewsletter() {
