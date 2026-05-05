@@ -1,0 +1,20 @@
+/* ============================================
+   JOOMA — Estilos principales
+   Edita aquí los colores, fuentes y tamaños
+   ============================================ */
+
+/* ─── COLORES PRINCIPALES ─── */
+:root {
+  --bg: #0a0a0a;          /* Fondo principal */
+  --bg2: #111111;         /* Fondo secundario */
+  --bg3: #1a1a1a;         /* Fondo tarjetas */
+  --bg4: #222222;         /* Fondo inputs */
+  --gold: #c9a96e;        /* Color dorado/acento */
+  --gold2: #e8c98a;       /* Dorado claro (hover) */
+  --text: #f0ede8;        /* Texto principal */
+  --text2: #a89f92;       /* Texto secundario */
+  --text3: #6b6560;       /* Texto terciario */
+  --border: rgba(201, 169, 110, 0.2);
+  --border2: rgba(201, 169, 110, 0.08);
+  --red: #c0392b;         /* Color oferta/descuento */
+}
