@@ -7,58 +7,44 @@
 const products = [
   {
     id: 1,
-    name: 'Blazer Estructurado',
-    brand: 'JOOMA Collection',
-    price: 189000,
-    oldPrice: null,          // null = sin precio tachado
-    img: 'img/productos/blazer-estructurado.jpg',
-    emoji: '🧥',             // Reemplaza con img cuando tengas fotos
-    badge: 'new',            // 'new', 'sale', o null
-    description: 'Blazer de corte estructurado en tela premium.',
-    tallas: ['XS', 'S', 'M', 'L', 'XL'],
-    categoria: 'ropa',
+    name: 'Undergold',
+    brand: 'undergold',
+    price: 85000,
+    img: 'img/productos/undergold.png',
+    badge: 'new',
+    description: 'Camiseta UnderGold con estilo urbano y acabado premium.',
+    tallas: ['S', 'M', 'L', 'XL'],
   },
   {
     id: 2,
-    name: 'Camiseta Logo JOOMA',
-    brand: 'JOOMA Collection',
-    price: 95000,
-    oldPrice: 145000,
-    img: 'img/productos/camiseta-logo.jpg',
-    emoji: '👕',
-    badge: 'sale',
-    description: 'Camiseta con logo JOOMA, diseño minimalista y cómoda.',
-    tallas: ['XS', 'S', 'M', 'L', 'XL', 'XXL'],
-    categoria: 'ropa',
-  },
-  {
-    id: 5,
-    name: 'Pantalón Wide Leg',
-    brand: 'JOOMA Collection',
-    price: 165000,
-    oldPrice: null,
-    img: 'img/productos/pantalon-wide.jpg',
-    emoji: '👖',
-    badge: null,
-    description: 'Pantalón de pierna ancha en tela fluida.',
-    tallas: ['XS', 'S', 'M', 'L', 'XL'],
-    categoria: 'ropa',
-  },
-
-  {
-    id: 7,
-    name: 'Cardigan Oversized',
-    brand: 'JOOMA Basics',
-    price: 135000,
-    oldPrice: null,
-    img: 'img/productos/cardigan.jpg',
-    emoji: '🧣',
+    name: 'Supreme',
+    brand: 'undergold',
+    price: 85000,
+    img: 'img/productos/supreme.jpg',
     badge: 'new',
-    description: 'Cardigan oversize en lana suave color carbón.',
-    tallas: ['S/M', 'L/XL'],
-    categoria: 'ropa',
+    description: 'Camiseta Supreme con diseño destacado y fit cómodo.',
+    tallas: ['S', 'M', 'L', 'XL'],
   },
-
+  {
+    id: 3,
+    name: 'Nike',
+    brand: 'undergold',
+    price: 85000,
+    img: 'img/productos/nike.jpg',
+    badge: 'new',
+    description: 'Camiseta Nike estilo casual, perfecta para diario.',
+    tallas: ['S', 'M', 'L', 'XL'],
+  },
+  {
+    id: 4,
+    name: 'Clemount',
+    brand: 'undergold',
+    price: 85000,
+    img: 'img/productos/clemount.png',
+    badge: 'new',
+    description: 'Camiseta Clemount con diseño único.',
+    tallas: ['S', 'M', 'L', 'XL'],
+  },
 ];
 
 // ─── CARRITO ─────────────────────────────────
@@ -75,7 +61,13 @@ function renderProducts() {
     <div class="product-card">
       <div class="product-img">
         ${p.badge ? `<span class="product-badge badge-${p.badge}">${p.badge === 'new' ? 'Nuevo' : 'Oferta'}</span>` : ''}
-        <span>${p.emoji}</span>
+        ${p.img ? `
+          <img
+            id="product-image-${p.id}"
+            src="${p.img}"
+            alt="${p.name}"
+          />
+        ` : ''}
         <div class="product-actions">
           <button class="add-to-cart" onclick="addToCart(${p.id})">Agregar al carrito</button>
           <button class="wishlist-btn">♡</button>
@@ -83,9 +75,10 @@ function renderProducts() {
       </div>
       <div class="product-brand">${p.brand}</div>
       <div class="product-name">${p.name}</div>
+      <p class="product-description">${p.description}</p>
+      <div class="product-sizes">Tallas: ${p.tallas.join(', ')}</div>
       <div class="product-price">
         <span class="price-current">${formatPrice(p.price)}</span>
-        ${p.oldPrice ? `<span class="price-old">${formatPrice(p.oldPrice)}</span>` : ''}
       </div>
     </div>
   `).join('');
@@ -123,7 +116,7 @@ function updateCart() {
   }
   container.innerHTML = cart.map(i => `
     <div class="cart-item">
-      <div class="cart-item-img">${i.emoji}</div>
+      <div class="cart-item-img">${i.name ? i.name.charAt(0) : ''}</div>
       <div class="cart-item-info">
         <div class="cart-item-name">${i.name}</div>
         <div class="cart-item-size">Cantidad: ${i.qty}</div>

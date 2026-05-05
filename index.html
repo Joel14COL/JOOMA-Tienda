@@ -551,7 +551,7 @@
   <div class="hero-bg"></div>
   <div class="hero-pattern"></div>
   <div class="hero-content">
-    <p class="hero-eyebrow">Camisetas — Muy buena calidad</p>
+    <p class="hero-eyebrow">Camisetas — De muy buena calidad</p>
     <h1 class="hero-title">
       Viste tu<br><em>esencia</em>
     </h1>
@@ -559,7 +559,7 @@
       Moda que habla sin palabras. Piezas únicas diseñadas para quienes no siguen tendencias, las crean.
     </p>
     <div class="hero-cta">
-      <a href="#productos" class="btn-primary">Explorar colección</a>
+      <a href="#productos" class="btn-primary">Explorar productos</a>
       <a href="#nosotros" class="btn-ghost">Nuestra historia →</a>
     </div>
   </div>
@@ -617,19 +617,6 @@
       <div class="testimonial-author">Isabella C.</div>
       <div class="testimonial-meta">Cali, Colombia</div>
     </div>
-  </div>
-</section>
-
-<!-- NEWSLETTER -->
-<section class="newsletter" id="contacto">
-  <p class="section-label">Únete a la comunidad</p>
-  <h2 class="section-title">Recibe novedades exclusivas</h2>
-  <p style="color: var(--text2); font-size: 0.9rem; max-width: 400px; margin: 0.75rem auto 0;">
-    Sé la primera en conocer nuevas colecciones, descuentos especiales y tips de estilo.
-  </p>
-  <div class="newsletter-form">
-    <input type="email" placeholder="Tu correo electrónico" id="email-input">
-    <button onclick="subscribeNewsletter()">Suscribirse</button>
   </div>
 </section>
 
@@ -707,129 +694,8 @@
 <!-- TOAST -->
 <div class="toast" id="toast">✦ Producto agregado al carrito</div>
 
-<script>
-  const products = [
-    { id:1, name:'Camiseta', brand:'undergold', price:85000, oldPrice:null,
-      images:['img/productos/undergold.png'], badge:'new'
-    },
-    { id:2, name:'Supreme', brand:'undergold', price:85000, oldPrice:null,
-      images:['img/productos/supreme.jpg'], badge:'new'
-    },
-    { id:3, name:'Nike', brand:'undergold', price:85000, oldPrice:null,
-      images:['img/productos/nike.jpg'], badge:'new'
-    },
-    { id:4, name:'Clemount', brand:'undergold', price:85000, oldPrice:null,
-      images:['img/productos/clemount.png', 'img/productos/clemount parte trasera.png'], badge:'new'
-    },
-  ];
-
-  let cart = [];
-
-  function formatPrice(p) {
-    return '$' + p.toLocaleString('es-CO');
-  }
-
-  function renderProducts() {
-    const grid = document.getElementById('products-grid');
-    grid.innerHTML = products.map(p => `
-      <div class="product-card">
-        <div class="product-img">
-          ${p.badge ? `<span class="product-badge badge-${p.badge}">${p.badge === 'new' ? 'Nuevo' : 'Oferta'}</span>` : ''}
-          ${p.images && p.images.length ? `
-            <img
-              id="product-image-${p.id}"
-              src="${p.images[0]}"
-              alt="${p.name}"
-              title="Haz click para ver ${p.images.length > 1 ? 'cambiar entre vistas' : 'ver el producto'}"
-              onclick="toggleProductImage(${p.id})"
-            />
-          ` : `<span>${p.emoji || ''}</span>`}
-          <div class="product-actions">
-            <button class="add-to-cart" onclick="addToCart(${p.id})">Agregar al carrito</button>
-            <button class="wishlist-btn">♡</button>
-          </div>
-        </div>
-        <div class="product-brand">${p.brand}</div>
-        <div class="product-name">${p.name}</div>
-        <div class="product-price">
-          <span class="price-current">${formatPrice(p.price)}</span>
-          ${p.oldPrice ? `<span class="price-old">${formatPrice(p.oldPrice)}</span>` : ''}
-        </div>
-      </div>
-    `).join('');
-  }
-
-  function addToCart(id) {
-    const product = products.find(p => p.id === id);
-    const existing = cart.find(i => i.id === id);
-    if (existing) {
-      existing.qty++;
-    } else {
-      cart.push({ ...product, qty: 1 });
-    }
-    updateCart();
-    showToast();
-  }
-
-  function removeFromCart(id) {
-    cart = cart.filter(i => i.id !== id);
-    updateCart();
-  }
-
-  function updateCart() {
-    const count = cart.reduce((s, i) => s + i.qty, 0);
-    document.getElementById('cart-count').textContent = count;
-
-    const total = cart.reduce((s, i) => s + i.price * i.qty, 0);
-    document.getElementById('cart-total').textContent = formatPrice(total);
-
-    const container = document.getElementById('cart-items');
-    if (cart.length === 0) {
-      container.innerHTML = '<div class="cart-empty"><div class="cart-empty-icon">🛍</div><p>Tu carrito está vacío</p></div>';
-      return;
-    }
-    container.innerHTML = cart.map(i => `
-      <div class="cart-item">
-        <div class="cart-item-img">${i.emoji}</div>
-        <div class="cart-item-info">
-          <div class="cart-item-name">${i.name}</div>
-          <div class="cart-item-size">Cantidad: ${i.qty}</div>
-          <div class="cart-item-price">${formatPrice(i.price)}</div>
-        </div>
-        <button class="cart-item-remove" onclick="removeFromCart(${i.id})">✕</button>
-      </div>
-    `).join('');
-  }
-
-  function toggleCart() {
-    document.getElementById('cart-overlay').classList.toggle('open');
-  }
-
-  function showToast() {
-    const t = document.getElementById('toast');
-    t.classList.add('show');
-    setTimeout(() => t.classList.remove('show'), 2800);
-  }
-
-  function toggleProductImage(id) {
-    const product = products.find(p => p.id === id);
-    if (!product || !product.images || product.images.length < 2) return;
-    const image = document.getElementById(`product-image-${id}`);
-    if (!image) return;
-    const currentSrc = image.src;
-    const currentIndex = product.images.findIndex(src => new URL(src, location).href === currentSrc);
-    const nextIndex = (currentIndex + 1) % product.images.length;
-    image.src = product.images[nextIndex];
-  }
-
-  function subscribeNewsletter() {
-    const val = document.getElementById('email-input').value.trim();
-    if (!val || !val.includes('@')) { alert('Por favor ingresa un correo válido.'); return; }
-    alert('¡Gracias! Te avisaremos con las mejores novedades 🖤');
-    document.getElementById('email-input').value = '';
-  }
-
-  renderProducts();
-</script>
+<script src="js/main.js"></script>
+</body>
+</html>
 </body>
 </html>
