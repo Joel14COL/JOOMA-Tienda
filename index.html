@@ -257,6 +257,10 @@
     position: relative; overflow: hidden;
   }
 
+  .product-img img {
+    width: 100%; height: 100%; object-fit: cover; cursor: pointer;
+  }
+
   .product-badge {
     position: absolute; top: 1rem; left: 1rem;
     font-size: 0.6rem; letter-spacing: 0.1em; text-transform: uppercase;
@@ -720,7 +724,11 @@
 
 <script>
   const products = [
-    { id:1, name:'Blazer Estructurado', brand:'JOOMA Collection', price:189000, oldPrice:null, emoji:'🧥', badge:'new' },
+    { id:1, name:'Camiseta', brand:'undergold', price:85000, oldPrice:null,
+      imageFront:'img/productos/undergold.png',
+      imageBack:'img/productos/undergold-back.png',
+      badge:'new'
+    },
     { id:2, name:'Camiseta Logo JOOMA', brand:'JOOMA Collection', price:95000, oldPrice:145000, emoji:'👕', badge:'sale' },
     { id:5, name:'Pantalón Wide Leg', brand:'JOOMA Collection', price:165000, oldPrice:null, emoji:'👖', badge:null },
     { id:7, name:'Cardigan Oversized', brand:'JOOMA Basics', price:135000, oldPrice:null, emoji:'🧣', badge:'new' },
@@ -738,7 +746,15 @@
       <div class="product-card">
         <div class="product-img">
           ${p.badge ? `<span class="product-badge badge-${p.badge}">${p.badge === 'new' ? 'Nuevo' : 'Oferta'}</span>` : ''}
-          <span>${p.emoji}</span>
+          ${p.imageFront ? `
+            <img
+              id="product-image-${p.id}"
+              src="${p.imageFront}"
+              alt="${p.name}"
+              title="Haz click para ver la espalda"
+              onclick="toggleProductImage(${p.id})"
+            />
+          ` : `<span>${p.emoji || ''}</span>`}
           <div class="product-actions">
             <button class="add-to-cart" onclick="addToCart(${p.id})">Agregar al carrito</button>
             <button class="wishlist-btn">♡</button>
@@ -804,6 +820,17 @@
     const t = document.getElementById('toast');
     t.classList.add('show');
     setTimeout(() => t.classList.remove('show'), 2800);
+  }
+
+  function toggleProductImage(id) {
+    const product = products.find(p => p.id === id);
+    if (!product || !product.imageFront || !product.imageBack) return;
+    const image = document.getElementById(`product-image-${id}`);
+    if (!image) return;
+    const currentSrc = image.src;
+    const frontUrl = new URL(product.imageFront, location).href;
+    const backUrl = new URL(product.imageBack, location).href;
+    image.src = currentSrc === frontUrl ? backUrl : frontUrl;
   }
 
   function subscribeNewsletter() {
